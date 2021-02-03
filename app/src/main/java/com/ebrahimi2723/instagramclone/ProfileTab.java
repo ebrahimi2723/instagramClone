@@ -1,5 +1,6 @@
 package com.ebrahimi2723.instagramclone;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
  */
 public class ProfileTab extends Fragment {
     private EditText edtName,edtBio;
-    private Button update;
+    private Button update,logout;
     private TextView textView;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -73,11 +74,31 @@ public class ProfileTab extends Fragment {
         edtName = view.findViewById(R.id.edtProfileName);
         edtBio = view.findViewById(R.id.edtProfileBio);
         update = view.findViewById(R.id.btnProfileUpdate);
+        logout= view.findViewById(R.id.logout);
+
         final ParseUser appUser= ParseUser.getCurrentUser();
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appUser.logOut();
+                Intent intent = new Intent(getContext(),SignUp.class);
+                startActivity(intent);
+
+            }
+        });
+        if (ParseUser.getCurrentUser().get("Profile_name")== null){
+            edtName.setText("");
+        }else {
+            edtName.setText(appUser.get("Profile_name").toString());
+        }
+        if (ParseUser.getCurrentUser().get("bio")== null){
+            edtBio.setText("");
+        }else {
+            edtBio.setText(appUser.get("bio").toString());
+        }
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "it's work", Toast.LENGTH_LONG).show();
 
 
                 appUser.put("Profile_name",edtName.getText().toString());

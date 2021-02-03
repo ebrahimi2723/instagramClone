@@ -43,7 +43,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         });
 
 
+
+        if (ParseUser.getCurrentUser() != null) {
+            // ParseUser.getCurrentUser().logOut();
+            goToSocialMedia();
+        }
+
     }
+
 
     @Override
     public void onClick(View view) {

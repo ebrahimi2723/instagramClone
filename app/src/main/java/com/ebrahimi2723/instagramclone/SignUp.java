@@ -39,6 +39,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 return false;
             }
         });
+        if (ParseUser.getCurrentUser() != null) {
+            // ParseUser.getCurrentUser().logOut();
+            goToSocialMedia();
+        }
     }
 
     @Override
