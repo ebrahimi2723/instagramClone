@@ -91,6 +91,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
        }
     }
     private void goToSocialMedia(){
+        finish();
         Intent intent =  new Intent(Login.this, Social_media.class);
         startActivity(intent);
 

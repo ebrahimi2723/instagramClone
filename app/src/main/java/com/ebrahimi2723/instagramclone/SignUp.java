@@ -100,8 +100,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }
     }
     private void goToSocialMedia(){
+        finish();
         Intent intent =  new Intent(SignUp.this, Social_media.class);
         startActivity(intent);
+
 
     }
 }

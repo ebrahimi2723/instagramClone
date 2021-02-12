@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.tabs.TabLayout;
@@ -70,19 +71,27 @@ public class Social_media extends AppCompatActivity {
                         ,3000);
             }else {
                 getChoseImage();
+
             }
+        }else if (item.getItemId()==R.id.logOutUser){
+
+           ParseUser.getCurrentUser().logOut();
+           finish();
+           Intent intent = new Intent(Social_media.this,Login.class);
+           startActivity(intent);
         }
+
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 3000){
-            if (grantResults.length >= 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                 getChoseImage();
+
             }
         }
     }
@@ -90,12 +99,16 @@ public class Social_media extends AppCompatActivity {
     private void getChoseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,4000);
+
+
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 4000 && requestCode == RESULT_OK && data != null ){
+        if (requestCode == 4000 && resultCode == RESULT_OK && data != null ){
         try {
             Uri uri= data.getData();
             Bitmap receivedImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);

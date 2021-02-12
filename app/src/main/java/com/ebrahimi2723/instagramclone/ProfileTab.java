@@ -23,8 +23,8 @@ import com.shashank.sony.fancytoastlib.FancyToast;
  */
 public class ProfileTab extends Fragment {
     private EditText edtName,edtBio;
-    private Button update,logout;
-    private TextView textView;
+    private Button update;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,18 +74,9 @@ public class ProfileTab extends Fragment {
         edtName = view.findViewById(R.id.edtProfileName);
         edtBio = view.findViewById(R.id.edtProfileBio);
         update = view.findViewById(R.id.btnProfileUpdate);
-        logout= view.findViewById(R.id.logout);
+
 
         final ParseUser appUser= ParseUser.getCurrentUser();
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                appUser.logOut();
-                Intent intent = new Intent(getContext(),SignUp.class);
-                startActivity(intent);
-
-            }
-        });
         if (ParseUser.getCurrentUser().get("Profile_name")== null){
             edtName.setText("");
         }else {
