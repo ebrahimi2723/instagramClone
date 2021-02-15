@@ -1,6 +1,7 @@
 package com.ebrahimi2723.instagramclone;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,14 +9,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +31,10 @@ import java.util.List;
  * Use the {@link UsersTap#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UsersTap extends Fragment {
+public class UsersTap extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     ListView listView;
-    ArrayList arrayList;
+    ArrayList <String> arrayList;
     ArrayAdapter arrayAdapter;
     ProgressDialog progressDialog;
 
@@ -80,6 +86,8 @@ public class UsersTap extends Fragment {
         View view= inflater.inflate(R.layout.fragment_users_tap, container, false);
         listView = view.findViewById(R.id.listView);
         arrayList=new ArrayList();
+        listView.setOnItemClickListener(UsersTap.this);
+        listView.setOnItemLongClickListener(UsersTap.this);
         arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1,arrayList);
 
         ParseQuery<ParseUser> parseQuery = ParseUser.getQuery();
@@ -105,5 +113,53 @@ public class UsersTap extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getContext(),UserPost.class);
+        intent.putExtra("username",arrayList.get(position));
+        startActivity(intent);
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+        ParseQuery<ParseUser> parseQuery = ParseUser.getQuery();
+        parseQuery.whereEqualTo("username", arrayList.get(position));
+        parseQuery.getFirstInBackground(new GetCallback<ParseUser>() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+
+                if (user != null && e == null) {
+
+//                    FancyToast.makeText(getContext(), user.get("bio") + "",
+//                            Toast.LENGTH_SHORT, FancyToast.SUCCESS,
+//                            true).show();
+                    final FlatDialog flatDialog = new FlatDialog(getContext());
+                    flatDialog.setTitle(user.getUsername()+"'s info")
+                            .setSubtitle(user.get("bio")+"")
+                            .setFirstButtonText("OK")
+
+                            .withFirstButtonListner(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    flatDialog.dismiss();
+
+                                }
+                            })
+
+                            .show();
+
+
+
+                }
+            }
+        });
+
+
+        return true;
     }
 }

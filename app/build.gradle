@@ -38,6 +38,7 @@ dependencies {
 // Don't forget to change the line below with the latest version of Parse SDK for Android
     implementation "com.github.parse-community.Parse-SDK-Android:parse:1.25.0"
     implementation 'com.github.Shashank02051997:FancyToast-Android:0.1.6'
+    implementation 'com.github.mejdi14:Flat-Dialog-Android:1.0.5'
 }
 repositories {
     mavenCentral()
